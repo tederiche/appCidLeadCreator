@@ -31,8 +31,8 @@ app.get('/vendas.html', (req, res) => {
 });
 
 // Rota do Terceiro arquivo
-app.get('/vendasDados.html', (req, res)=>{
-    const filePath = path.join(__dirname, 'public', 'vendasDados.html');
+app.get('/dadosvendedores.html', (req, res)=>{
+    const filePath = path.join(__dirname, 'public', 'dadosvendedores.html');
     res.sendFile(filePath)
 });
 

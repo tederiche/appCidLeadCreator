@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Pesquisa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="titulo">Dados Vendedores</h1>
+
+    <form id="pesquisaForm" class="formulario" action="/puxarDados">
+        <h1 class="tltForm">Vendedores</h1>
+        <br>
+
+        <label for="operador" class="labForm">Vendedor</label>
+        <div id="selectContainerVendedor"></div>
+
+        <label>Escolha</label>
+        <br>
+        <input type="radio" name="escolha" id="concluido" value="Concluido" checked>
+        <label for="concluido">Concluido</label>
+
+        <input type="radio" name="escolha" id="escolha" value="Renegociar">
+        <label for="renegociar">Renegociar</label>
+
+        <button class="btnEnviarVendas" onclick="">Puxar Dados</button>
+
+    </form>
+
+    <script>
+        
+        async function carregarOpcoesVendedores() {
+            try {
+                const response = await fetch('vendedores.json');
+                if (!response.ok) {
+                    throw new Error(`Erro ao carregar vendedores.json: ${response.status} ${response.statusText}`);
+                }
+                const data = await response.json();
+
+                
+                const selectContainerVendedor = document.getElementById('selectContainerVendedor');
+                const selectVendedor = document.createElement('select');
+                selectVendedor.id = "operador";
+                selectVendedor.className = "inputvendedor operador";
+                selectVendedor.name = "nomeOperador";
+                
+                // Adiciona uma opção vazia
+                const optionVazia = document.createElement('option');
+                optionVazia.value = '';
+                optionVazia.textContent = 'Selecione um vendedor';
+                selectVendedor.appendChild(optionVazia);
+
+                // Adiciona opções para cada vendedor
+                data.vendedores.forEach((vendedor) => {
+                    const option = document.createElement('option');
+                    option.value = vendedor;
+                    option.textContent = vendedor;
+                    selectVendedor.appendChild(option);
+                });
+                
+                // Adiciona o select ao container
+                selectContainerVendedor.appendChild(selectVendedor);
+            } catch (error) {
+                console.error('Erro ao carregar opções de vendedores:', error);
+            }
+        }
+        
+
+        async function puxarDados() {
+            event.preventDefault();
+            try {
+                const nomeOperador = document.getElementById('operador').value;
+                const escolha = document.querySelector('input[name="escolha"]:checked').value;
+
+                // Certifique-se de que está enviando um objeto com as propriedades corretas
+                const requestBody = {
+                    nomeOperador: nomeOperador,
+                    escolha: escolha
+                };
+
+                console.log('Request Body:', requestBody);
+
+                const response = await fetch('/puxarDados', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                // Restante do código...
+            } catch (error) {
+                console.error('Erro ao puxar dados:', error);
+                console.error(error.stack);
+            }
+        }
+
+
+            // Adicione um manipulador de eventos para o botão "Puxar Dados"
+            const btnPuxarDados = document.querySelector('.btnEnviarVendas');
+            btnPuxarDados.addEventListener('click', puxarDados);
+            carregarOpcoesVendedores();
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Pesquisa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="titulo">Formulário de Pesquisa</h1>
+
+    <form id="pesquisaForm" class="formulario">
+        <h1 class="tltForm">Gerador de Leads</h1>
+
+        <!-- Container para os campos de seleção de estado -->
+        <div id="estadosContainer"></div>
+        <button type="button" onclick="adicionarEstado()">Adicionar Estado</button>
+        <br>
+
+        <label for="nomeArquivo" class="labForm">Nome do Arquivo:</label>
+        <input type="text" id="nomeArquivo" class="inputCID nomedoArquivo" placeholder="M251" name="nomeArquivo" required>
+
+        <button type="submit" class="btnCID">Realizar Pesquisa</button>
+    </form>
+
+    <script>
+        let data;
+
+        async function carregarEstados() {
+            const response = await fetch('estados.json');
+            data = await response.json(); // Atribua a resposta à variável data
+
+            // Organizar o array em ordem alfabética pelas abreviações dos estados
+            data.estados.sort((a, b) => a.abreviacao.localeCompare(b.abreviacao));
+
+            const estadosContainer = document.getElementById('estadosContainer');
+
+            // Criar o primeiro campo de seleção de estado
+            adicionarEstado();
+        }
+
+        // Função para adicionar dinamicamente um novo campo de seleção de estado
+        function adicionarEstado() {
+            const estadosContainer = document.getElementById('estadosContainer');
+
+            // Criar um novo <select>
+            const selectEstados = document.createElement('select');
+            selectEstados.className = "inputCID CID10";
+            selectEstados.name = "estado";
+
+            // Adicionar a opção padrão (se desejar)
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Selecione um Estado";
+            selectEstados.appendChild(defaultOption);
+
+            // Adicionar opções para cada valor no arquivo JSON
+            data.estados.forEach((valor) => {
+                const option = document.createElement('option');
+                option.value = valor.abreviacao;
+                option.textContent = valor.abreviacao;
+                selectEstados.appendChild(option);
+            });
+
+            // Adicionar o <select> ao contêiner
+            estadosContainer.appendChild(selectEstados);
+        }
+
+            document.getElementById('pesquisaForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            // Obter todos os valores selecionados dos <select> para Estados    
+            const selectElements = document.querySelectorAll('.inputCID.CID10');
+            const estadosSelecionados = Array.from(selectElements).map(element => element.value);
+
+            const nomeArquivo = document.getElementById('nomeArquivo').value;
+            if (!nomeArquivo) {
+                alert('Por favor, preencha o campo "Nome do Arquivo".');
+                return;
+            }
+
+            console.log('Estados selecionados:', estadosSelecionados); // Adicione este log
+
+            try {
+                const response = await fetch('http://localhost:3004/pesquisaporestado', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        estado: estadosSelecionados[0],  // Pode ser apenas o primeiro estado, dependendo da sua lógica
+                        nomeArquivo,
+                        outrasCondicoes: {}  // Adicione esta propriedade, mesmo que vazia, para corresponder à estrutura esperada
+                    }),
+                });
+
+                const data = await response.json();
+                console.log('Resultados da pesquisa:', data.resultados);
+            } catch (error) {
+                console.error('Erro ao realizar pesquisa:', error);
+            }
+        });
+
+
+        // Chamar a função para carregar as opções do Estado
+        carregarEstados();
+    </script>
+</body>
+</html>

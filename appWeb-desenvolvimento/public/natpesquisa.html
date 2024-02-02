@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Pesquisa</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Formulário de Pesquisa -->
+<form id="formPesquisa" class="formulario">
+    <label for="nomeArquivo" class="labForm">Nome do Arquivo:</label>
+    <input type="text" id="nomeArquivo" name="nomeArquivo" class="inputCID nomedoArquivo" required>
+
+    <label for="parteNatLesao" class="labForm">Parte do NAT_LESAO:</label>
+    <input type="text" id="parteNatLesao" class="natLes nomedoArquivo" name="parteNatLesao" pattern="^\d{2}\.\d{2}\.\d{2}\.\d{3}" required>
+
+    <button type="submit">Enviar Pesquisa</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Evento de envio do formulário
+        document.getElementById('formPesquisa').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Obter os valores dos campos do formulário
+            const nomeArquivo = document.getElementById('nomeArquivo').value;
+            const parteNatLesao = document.getElementById('parteNatLesao').value;
+
+            // Verificar se parteNatLesao é undefined ou null
+            if (!parteNatLesao) {
+                console.error('Valor inválido para parteNatLesao');
+                return;
+            }
+             // Extrair apenas os números da entrada
+             const numerosParteNatLesao = parteNatLesao.match(/\d+/g);
+
+            // Verificar se existem quatro grupos de números
+            if (!numerosParteNatLesao || numerosParteNatLesao.length !== 4) {
+                console.error('Formato inválido para parteNatLesao');
+                return;
+            }
+
+            console.log('nomeArquivo:', nomeArquivo);
+            console.log('parteNatLesao:', parteNatLesao);
+
+            // Realizar a requisição POST usando a Fetch API
+            fetch('http://localhost:3005/natPesquisa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nomeArquivo, parteNatLesao })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta do servidor:', data);
+            })
+            .catch(error => {
+                console.error('Erro na requisição:', error);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

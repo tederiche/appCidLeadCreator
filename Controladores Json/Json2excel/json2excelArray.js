@@ -61,7 +61,7 @@ jsonFiles.forEach(jsonFile => {
     }
 });
 
-const excelOutputPath = 'output_agrupado.xlsx';
+const excelOutputPath = 'Fratura_parte.xlsx';
 
 workbook.xlsx.writeFile(excelOutputPath)
     .then(() => {

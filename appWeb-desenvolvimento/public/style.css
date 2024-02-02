@@ -72,7 +72,7 @@ body {
     border: none;
     border-radius: 5px;
     height: 35px;
-    left: 67vw;
+    left: 48vw;
     top: 15%;
 }
 .menuDiv{
@@ -180,4 +180,17 @@ body {
     border-bottom: 2px;
     background-color: #eeeeee;
     border-radius: 3px;
+}
+
+.natLes{
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 2vw;
+}
+
+.btnAdmin:hover{
+    color: white;
+    transition: 0.2s;
 }

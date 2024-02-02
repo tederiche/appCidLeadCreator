@@ -12,7 +12,9 @@
     <header class="cabecalho">
         <div class="menuDiv">
 
-            <button id="btnAdmin" class="btnAdmin">Admin</button>
+            <button id="btnAdmin" class="btnAdmin">CID 10</button>
+            <button id="btnEstado" class="btnAdmin">Estados </button>
+            <button id="btnNat" class="btnAdmin">Pesquisa por Nat </button>
             <button id="btnVendedor" class="btnAdmin">Vendedor</button>
             <button id="btnDados" class="btnAdmin">Dados de vendas</button>
            
@@ -59,6 +61,26 @@
             if (btnDados) {
                 btnDados.onclick = function () {
                     window.location.href = 'http://localhost:3003/dadosvendedores.html';
+                };
+            } else {
+                console.error('Elemento com ID "btnVendedor" não encontrado.');
+            }
+
+            const btnEstado = document.getElementById('btnEstado')
+
+            if (btnEstado) {
+                btnEstado.onclick = function () {
+                    window.location.href = 'http://localhost:3004/pesquisaporestado.html';
+                };
+            } else {
+                console.error('Elemento com ID "btnVendedor" não encontrado.');
+            }
+
+            const btnNat = document.getElementById('btnNat')
+
+            if (btnNat) {
+                btnNat.onclick = function () {
+                    window.location.href = 'http://localhost:3004/natpesquisa.html';
                 };
             } else {
                 console.error('Elemento com ID "btnVendedor" não encontrado.');

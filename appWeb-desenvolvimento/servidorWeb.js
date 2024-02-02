@@ -5,6 +5,8 @@ const cors = require('cors');
 const { fazerPesquisa } = require('./pesquisa.js'); // Usando caminho relativo
 const { salvarResposta } = require('./cadastroVendas.js'); // Usando caminho relativo
 const { vendasController } = require('./dadosVendas.js'); //Usando caminho relativo
+const { pesquisaEstados } = require('./pesquisaporestado.js'); //Usando caminho relativo
+const { natPesquisa } = require('./natPesquisa.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,6 +38,15 @@ app.get('/dadosvendedores.html', (req, res)=>{
     res.sendFile(filePath)
 });
 
+//rota do Quarto arquivo
+app.get('/pesquisaporestado.html', (req, res)=>{
+    const filePath = path.join(__dirname, 'public', 'pesquisaporestado.html');
+    res.sendFile(filePath)
+});
+
+app.get('/natpesquisa.html'),(req, res)=>{
+    const filePath = path.join(__dirname, 'public', 'natpesquisa.html')
+}
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);

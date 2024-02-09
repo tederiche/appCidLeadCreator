@@ -14,10 +14,11 @@
 
             <button id="btnAdmin" class="btnAdmin">CID 10</button>
             <button id="btnEstado" class="btnAdmin">Estados </button>
+            <button id="btnDias" class="btnAdmin">Dias Afastado</button>
             <button id="btnNat" class="btnAdmin">Pesquisa por Nat </button>
             <button id="btnVendedor" class="btnAdmin">Vendedor</button>
             <button id="btnDados" class="btnAdmin">Dados de vendas</button>
-           
+            
         </div>
     </header>
     <main class="conteudo">
@@ -81,6 +82,17 @@
             if (btnNat) {
                 btnNat.onclick = function () {
                     window.location.href = 'http://localhost:3004/natpesquisa.html';
+                };
+            } else {
+                console.error('Elemento com ID "btnVendedor" não encontrado.');
+            }
+
+            
+            const btnDias = document.getElementById('btnDias')
+
+            if (btnDias) {
+                btnDias.onclick = function () {
+                    window.location.href = 'http://localhost:3004/diasafastado.html';
                 };
             } else {
                 console.error('Elemento com ID "btnVendedor" não encontrado.');

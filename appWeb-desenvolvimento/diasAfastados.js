@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fs = require('fs');
 const { MongoClient } = require('mongodb');
 const path = require('path');
+const fs = require('fs');
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -15,31 +16,37 @@ app.use(express.static(publicFolderPath));
 
 const client = new MongoClient('mongodb://localhost:27017/novoDB');
 
-async function fazerPesquisa(nomeArquivo, parteNatLesao, objetosPorArquivo = 20000, limitePorConsulta = 100) {
+async function fazerPesquisa(nomeArquivo, diasAfastado, objetosPorArquivo = 20000, limitePorConsulta = 100) {
     const leadsFolderPath = path.join(__dirname, 'leads');
-    let resultadosPorColecao = [];
 
     try {
         await client.connect();
         const database = client.db();
         const colecoes = await database.listCollections().toArray();
 
+        const resultadosPorColecao = [];
+
         for (const colecaoInfo of colecoes) {
             const colecaoNome = colecaoInfo.name;
             const colecao = database.collection(colecaoNome);
-            // Verificar se parteNatLesao é indefinida ou nula
-            if (parteNatLesao === undefined || parteNatLesao === null) {
-                console.error('parteNatLesao é indefinida ou nula');
-                return;
-            }
 
-            // Extrair apenas os números da entrada
-            const numerosParteNatLesao = parteNatLesao.match(/\d+/g);
+            const valorDiasAfastado = parseInt(diasAfastado, 10);
+
+            console.log('valorDiasAfastado:', valorDiasAfastado);
+
             const query = {
-                
-                    NAT_NUMERO: { $regex: new RegExp('^' + numerosParteNatLesao.join('\\.') + '.*$') }
-                
-            };
+                $expr: {
+                  $and: [
+                    { $ne: ["$DIAS", ""] },  // Garante que o campo DIAS não está vazio
+                    { $regexMatch: { input: "$DIAS", regex: /^\d+$/ } },  // Verifica se o campo DIAS é composto apenas por dígitos
+                    { $gte: [{ $toInt: "$DIAS" }, valorDiasAfastado] }  // Converte e compara o valor como número
+                  ]
+                }
+              };
+
+            // Executar a lógica desejada usando a consulta
+            const resultados = await colecao.find(query).toArray();
+            resultadosPorColecao.push({ colecao: colecaoNome, resultados });
 
             let offset = 0;
             let limite = limitePorConsulta;
@@ -96,6 +103,8 @@ async function fazerPesquisa(nomeArquivo, parteNatLesao, objetosPorArquivo = 200
             writeStream.end();
         }
 
+        return resultadosPorColecao;
+
     } catch (error) {
         console.error('Erro durante a pesquisa:', error);
         throw error;
@@ -103,33 +112,28 @@ async function fazerPesquisa(nomeArquivo, parteNatLesao, objetosPorArquivo = 200
 }
 
 // Atualize a rota de pesquisa para aceitar
-app.post('/natpesquisa', async (req, res) => {
-    const { nomeArquivo, parteNatLesao, pagina = 1, itensPorPagina = 100 } = req.body;
+app.post('/diasafastado', async (req, res) => {
+    const { nomeArquivo, diasAfastado, pagina = 1, itensPorPagina = 100 } = req.body;
+
+    console.log('nomeArquivo recebido:', nomeArquivo);
+    console.log('diasAfastado recebido:', diasAfastado);
     try {
-        if (!nomeArquivo || !parteNatLesao) {
+        if (!nomeArquivo || !diasAfastado) {
             return res.status(400).json({ error: 'Parâmetros inválidos' });
         }
 
-        await fazerPesquisa(nomeArquivo, parteNatLesao); 
+        const resultados = await fazerPesquisa(nomeArquivo, diasAfastado);
 
-        // Você pode retornar uma mensagem de sucesso se necessário
-        res.json({ success: true });
+        // Enviar os resultados como resposta em JSON
+        res.json({ success: true, resultados });
     } catch (error) {
         console.error('Erro ao executar pesquisa', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
 });
 
-function paginarResultados(resultados, pagina, itensPorPagina) {
-    const startIndex = (pagina - 1) * itensPorPagina;
-    const endIndex = startIndex + itensPorPagina;
-    return resultados.slice(startIndex, endIndex);
-}
-
-
-
-app.get('/natpesquisa.html', (req, res) => {
-    const filePath = path.join(publicFolderPath, 'natpesquisa.html');
+app.get('/diasafastado.html', (req, res) => {
+    const filePath = path.join(publicFolderPath, 'diasafastado.html');
     res.sendFile(filePath);
 });
 

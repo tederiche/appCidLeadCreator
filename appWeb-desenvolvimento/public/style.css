@@ -72,7 +72,7 @@ body {
     border: none;
     border-radius: 5px;
     height: 35px;
-    left: 48vw;
+    left: 38vw;
     top: 15%;
 }
 .menuDiv{
@@ -193,4 +193,5 @@ body {
 .btnAdmin:hover{
     color: white;
     transition: 0.2s;
+    background-color: #b3d983
 }

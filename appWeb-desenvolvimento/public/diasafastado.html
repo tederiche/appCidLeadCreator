@@ -15,8 +15,8 @@
     <label for="nomeArquivo" class="labForm">Nome do Arquivo:</label>
     <input type="text" id="nomeArquivo" name="nomeArquivo" class="inputCID nomedoArquivo" required>
 
-    <label for="parteNatLesao" class="labForm">Parte do NAT_LESAO:</label>
-    <input type="text" id="parteNatLesao" class="natLes nomedoArquivo" name="parteNatLesao" pattern="^\d{2}\.\d{2}\.\d{2}\.\d{3}" required>
+    <label for="diasAfastado" class="labForm">Dias Afastado:</label>
+    <input type="text" id="diasAfastado" class="natLes nomedoArquivo" name="diasAfastado" required>
 
     <button type="submit">Enviar Pesquisa</button>
 </form>
@@ -29,32 +29,24 @@
 
             // Obter os valores dos campos do formulário
             const nomeArquivo = document.getElementById('nomeArquivo').value;
-            const parteNatLesao = document.getElementById('parteNatLesao').value;
+            const diasAfastado = document.getElementById('diasAfastado').value;
 
-            // Verificar se parteNatLesao é undefined ou null
-            if (!parteNatLesao) {
-                console.error('Valor inválido para parteNatLesao');
-                return;
-            }
-             // Extrair apenas os números da entrada
-             const numerosParteNatLesao = parteNatLesao.match(/\d+/g);
-
-            // Verificar se existem quatro grupos de números
-            if (!numerosParteNatLesao || numerosParteNatLesao.length !== 4) {
-                console.error('Formato inválido para parteNatLesao');
+            // Verificar se diasAfastado é undefined ou null
+            if (!diasAfastado) {
+                console.error('Valor inválido para diasAfastado');
                 return;
             }
 
             console.log('nomeArquivo:', nomeArquivo);
-            console.log('parteNatLesao:', parteNatLesao);
+            console.log('diasAfastado:', diasAfastado);
 
             // Realizar a requisição POST usando a Fetch API
-            fetch('http://localhost:3005/natpesquisa', {
+            fetch('http://localhost:3005/diasafastado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeArquivo, parteNatLesao })
+                body: JSON.stringify({ nomeArquivo, diasAfastado })
             })
             .then(response => response.json())
             .then(data => {
@@ -66,6 +58,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>

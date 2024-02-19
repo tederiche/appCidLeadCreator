@@ -16,10 +16,10 @@ app.use(cors({ origin: '*' }));
 const publicFolderPath = path.join(__dirname, 'public'); //acessar a pasta public
 app.use(express.static(publicFolderPath));
 
-const client = new MongoClient('mongodb://localhost:27017/empresaTest');
+const client = new MongoClient('mongodb://localhost:27017/novoDB');
 
 async function fazerPesquisa(valorCid10, valorCidTipo, nomeArquivo, objetosPorArquivo = 2000) {
-    const leadsFolderPath = path.join(__dirname, 'leads'); // Substitua '__dirname' pelo caminho da sua aplicação se necessário
+    const leadsFolderPath = path.join(__dirname, 'leads'); 
 
     try {
         await client.connect();

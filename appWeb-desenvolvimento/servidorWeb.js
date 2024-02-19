@@ -7,6 +7,7 @@ const { salvarResposta } = require('./cadastroVendas.js'); //Usando caminho rela
 const { vendasController } = require('./dadosVendas.js'); //Usando caminho relativo
 const { pesquisaEstados } = require('./pesquisaporestado.js'); //Usando caminho relativo
 const { natPesquisa } = require('./natPesquisa.js'); //Usando caminho relativo
+const { todasVendas} = require('./todasVendas.js')
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -50,6 +51,10 @@ app.get('/natpesquisa.html'),(req, res)=>{
 }
 app.get('/diasafastado.html'),(req, res)=>{
     const filePath = path.join(__dirname, 'public', 'diasafastado.html')
+    res.sendFile(filePath)
+}
+app.get('/todasvendas.html'),(req, res)=>{
+    const filePath = path.join(__dirname, 'public', 'todasVendas.html')
     res.sendFile(filePath)
 }
 

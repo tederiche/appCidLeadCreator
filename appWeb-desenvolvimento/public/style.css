@@ -67,12 +67,12 @@ body {
 }
 .btnAdmin{
     position: relative;
-    background-color: rgba(154, 38, 217, 0.585);
+    background-color: #9a26d995;
     width: 150px;
     border: none;
     border-radius: 5px;
     height: 35px;
-    left: 38vw;
+    left: 28vw;
     top: 15%;
 }
 .menuDiv{

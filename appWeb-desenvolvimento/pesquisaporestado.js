@@ -13,7 +13,7 @@ app.use(cors({ origin: '*' }));
 const publicFolderPath = path.join(__dirname, 'public');
 app.use(express.static(publicFolderPath));
 
-const client = new MongoClient('mongodb://localhost:27017/empresaTest');
+const client = new MongoClient('mongodb://localhost:27017/novoDB');
 
 async function fazerPesquisa(estado, nomeArquivo, outrasCondicoes = {}, objetosPorArquivo = 20000, limitePorConsulta = 100) {
     const leadsFolderPath = path.join(__dirname, 'leads');

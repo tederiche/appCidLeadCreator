@@ -19,6 +19,7 @@
             <button id="btnVendedor" class="btnAdmin">Vendedor</button>
             <button id="btnDados" class="btnAdmin">Dados de vendas</button>
             <button id="btnVendas" class="btnAdmin">Todas Vendas</button>
+            <button id="btnCPF" class="btnAdmin">Pesquisa CPF</button>
             
         </div>
     </header>
@@ -65,7 +66,7 @@
                     window.location.href = 'http://localhost:3003/dadosvendedores.html';
                 };
             } else {
-                console.error('Elemento com ID "btnVendedor" não encontrado.');
+                console.error('Elemento com ID "btnDados" não encontrado.');
             }
 
             const btnEstado = document.getElementById('btnEstado')
@@ -75,7 +76,7 @@
                     window.location.href = 'http://localhost:3004/pesquisaporestado.html';
                 };
             } else {
-                console.error('Elemento com ID "btnVendedor" não encontrado.');
+                console.error('Elemento com ID "btnEstado" não encontrado.');
             }
 
             const btnNat = document.getElementById('btnNat')
@@ -85,7 +86,7 @@
                     window.location.href = 'http://localhost:3004/natpesquisa.html';
                 };
             } else {
-                console.error('Elemento com ID "btnVendedor" não encontrado.');
+                console.error('Elemento com ID "btnNat" não encontrado.');
             }
 
             
@@ -96,7 +97,7 @@
                     window.location.href = 'http://localhost:3004/diasafastado.html';
                 };
             } else {
-                console.error('Elemento com ID "btnVendedor" não encontrado.');
+                console.error('Elemento com ID "btnDias" não encontrado.');
             }
 
             const btnVendas = document.getElementById('btnVendas')
@@ -106,7 +107,17 @@
                     window.location.href = 'http://localhost:3008/todasVendas.html';
                 };
             } else {
-                console.error('Elemento com ID "btnVendedor" não encontrado.');
+                console.error('Elemento com ID "btnVendas" não encontrado.');
+            }
+
+            const btnCPF = document.getElementById('btnCPF')
+            if(btnCPF){
+                btnCPF.onclick = function(){
+                    window.location.href = 'http://localhost:3006/pesquisaCPF.html'
+                }
+            }
+            else{
+                console.error('Elemento com ID "btnCPF" não encontrado')
             }
         });
     </script>

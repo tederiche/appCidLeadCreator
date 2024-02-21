@@ -1,13 +1,15 @@
+// main 3000
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
-const { fazerPesquisa } = require('./pesquisa.js'); //Usando caminho relativo
-const { salvarResposta } = require('./cadastroVendas.js'); //Usando caminho relativo
-const { vendasController } = require('./dadosVendas.js'); //Usando caminho relativo
-const { pesquisaEstados } = require('./pesquisaporestado.js'); //Usando caminho relativo
-const { natPesquisa } = require('./natPesquisa.js'); //Usando caminho relativo
-const { todasVendas} = require('./todasVendas.js')
+const { fazerPesquisa } = require('./pesquisa.js'); //Usando caminho relativo 3001
+const { salvarResposta } = require('./cadastroVendas.js'); //Usando caminho relativo 3002
+const { vendasController } = require('./dadosVendas.js'); //Usando caminho relativo 3003
+const { pesquisaEstados } = require('./pesquisaporestado.js'); //Usando caminho relativo 3004
+const { natPesquisa } = require('./natPesquisa.js'); //Usando caminho relativo 3005
+const { todasVendas} = require('./todasVendas.js'); //porta 3008
+const { pesquisaCPF} = require('./pesquisaCPF.js'); //porta 3006
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -55,6 +57,10 @@ app.get('/diasafastado.html'),(req, res)=>{
 }
 app.get('/todasvendas.html'),(req, res)=>{
     const filePath = path.join(__dirname, 'public', 'todasVendas.html')
+    res.sendFile(filePath)
+}
+app.get('/pesquisacpf.html'),(req, res)=>{
+    const filePath = path.join(__dirname, 'public', 'pesquisaCPF.html')
     res.sendFile(filePath)
 }
 
